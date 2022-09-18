@@ -12,7 +12,7 @@ const employeeInfo = {
 let allEmployeeInfo = {};
 
 // Fetches information from randomuser.me and stores the information in a new object then adds the information to t
-fetch('https://randomuser.me/api/?results=12&?inc=,name,location,email,picture,phone,dob&noinfo')
+fetch('https://randomuser.me/api/?results=12&?inc=,name,location,email,picture,phone,dob&noinfo&nat=us,dk,fr,gb,no')
 .then(checkStatus)
 .then((res) => res.json())
 .then((data) => { 
@@ -27,7 +27,7 @@ function storeInfoInObjectAndCreateDiv() {
     for (let i = 0; i < 12; i++) {
         employeeInfo.name = `${allEmployeeInfo.results[i].name.first} ${allEmployeeInfo.results[i].name.last}`;
         employeeInfo.email = allEmployeeInfo.results[i].email;
-        employeeInfo.image = allEmployeeInfo.results[i].picture.large;
+        employeeInfo.image = allEmployeeInfo.results[i].picture.medium;
         employeeInfo.city = allEmployeeInfo.results[i].location.city;
         createEmployeeDiv(employeeInfo.image, employeeInfo.name, employeeInfo.email, employeeInfo.city, i);
     }
@@ -67,7 +67,7 @@ function createEmployeeDiv(imageUrl, employeeName, emplyeeEmail, employeeCity, a
     mainDiv.dataset.arrNumber = arrNumb;
 
     const employeeInfo = `
-    <h3 data-arr-number="${arrNumb}">${employeeName}</h3>
+    <h3 class="employeeName" data-arr-number="${arrNumb}">${employeeName}</h3>
     <p data-arr-number="${arrNumb}">${emplyeeEmail}<br>
     ${employeeCity}</p>
     `;
@@ -94,7 +94,6 @@ function checkStatus(response) {
 //
 
 const overlay = document.getElementById('employee-overlay');
-const employee = document.getElementById('employee')
 
 // Open overlay
 
@@ -105,8 +104,7 @@ document.addEventListener('click', (e) => {
         overlay.classList.add('show');
         overlay.classList.remove('hide');
         const arrayNumber = mClick.dataset.arrNumber;
-        createPopupContent(arrayNumber)
-
+        createPopupContent(arrayNumber);
     }
 });
 
@@ -124,11 +122,13 @@ document.addEventListener('click', (e) => {
 
 // Overlay content
 
-function createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employeeCity, employeeCell, emplyeeAddress, employeeDob) {
+function createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employeeCity, employeeCell, emplyeeAddress, employeeDob, arrNumber) {
     const popupDiv = document.getElementById('employee-popup');
-    const image = document.getElementById('employee-popup-img')
+    const image = document.getElementById('employee-popup-img');
     const mainInfoDiv = document.getElementsByClassName('employee-popup-info')[0];
     const secondInfoDiv = document.getElementsByClassName('employee-popup-info-second')[0];
+
+    popupDiv.dataset.arrNumber = arrNumber;
     image.src = `${imageUrl}`;
     image.alt = `profile image of ${employeeName}`;
     
@@ -147,7 +147,7 @@ function createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employ
 }
 
 function createPopupContent(arrNumb) {
-    const imageUrl = allEmployeeInfo.results[arrNumb].picture.large;
+    const imageUrl = allEmployeeInfo.results[arrNumb].picture.medium;
     const employeeName = `${allEmployeeInfo.results[arrNumb].name.first} ${allEmployeeInfo.results[arrNumb].name.last}`;
     const emplyeeEmail =  allEmployeeInfo.results[arrNumb].email;
     const employeeCity = allEmployeeInfo.results[arrNumb].location.city;
@@ -155,5 +155,43 @@ function createPopupContent(arrNumb) {
     const emplyeeAddress = `${allEmployeeInfo.results[arrNumb].location.street.name} ${allEmployeeInfo.results[arrNumb].location.street.number}, ${allEmployeeInfo.results[arrNumb].location.state} ${allEmployeeInfo.results[arrNumb].location.postcode}`;
     const employeeDob =  `Birthday: ${allEmployeeInfo.results[arrNumb].dob.date.substring(0, 10)}`;
 
-    createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employeeCity, employeeCell, emplyeeAddress, employeeDob)
+    createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employeeCity, employeeCell, emplyeeAddress, employeeDob, arrNumb);
 }
+
+
+document.addEventListener('click', (e) => {
+    const mClick = e.target;
+    const popup = document.getElementById('employee-popup');
+    let arrayNumber = parseInt(popup.dataset.arrNumber);
+    
+    if (mClick.id === 'right' && arrayNumber === 11) {
+        createPopupContent(0);
+    } else if (mClick.id === 'left' && arrayNumber === 0) {
+        createPopupContent(11);
+    } else if (mClick.id === 'right') {
+        createPopupContent(arrayNumber+1);
+    } else if (mClick.id === 'left') {
+        createPopupContent(arrayNumber-1);
+    }
+});
+
+//
+// Search
+//
+
+
+const input = document.getElementById('search-bar-input');
+
+
+input.addEventListener('keyup', (e) => {
+    let inputValue = e.target.value.toLowerCase();
+    let employees = document.querySelectorAll('.employeeName');
+    console.log(inputValue);
+    employees.forEach( (employee) => {
+        if(employee.textContent.toLowerCase().includes(inputValue)) {
+            employee.parentElement.parentElement.style.display = 'flex';
+        } else {
+            employee.parentElement.parentElement.style.display = 'none';
+        }
+    });
+});

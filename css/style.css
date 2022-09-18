@@ -12,11 +12,40 @@ p {
     cursor: default;
 }
 
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#main-header {
+    color: rgba(97,97,97,255);
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+/* Search  start*/
+
+#search-bar-input {
+    width: 250px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: none;
+    box-shadow: 0 0 11px rgba(33,33,33, .2);
+    border-radius: 5px;
+}
+
+/* Search end */
+
 #employees-div {
     display: grid;
     grid-template-columns: repeat(auto-fit, 295px);
-    grid-gap: 20px 10px;
-    justify-content: space-around;
+    grid-gap: 10px;
+    justify-content: center;
 }
 
 .employee {
@@ -27,6 +56,7 @@ p {
     background: #fff;
     border-radius: 5px;
     height: 145px;
+    animation: fadeIn .5s ease-in forwards;
 }
 
 .employee:hover {
@@ -36,7 +66,7 @@ p {
 .employee-img {
     border-radius: 50%;
     height: 90px;
-    margin: auto 15px;
+    margin: auto 10px;
 }
 
 .employee-info {
@@ -45,7 +75,6 @@ p {
 }
 .employee-info p {
     margin-top: 4px;
-    margin-right: 10px;
     color: rgba(183,187,189,255);
     font-size: .7rem;
     line-height: 1.5;
@@ -64,14 +93,6 @@ p {
     width: 90vw;
     margin: auto;
 
-}
-
-#main-header {
-    color: rgba(97,97,97,255);
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    font-size: 1.2rem;
 }
 
 
@@ -165,13 +186,59 @@ p {
     word-break: break-all;
 }
 
+/* Arrows */
 
-@media (min-width: 768px) {
-    
+#arrows {
+    width: 90%;
+    position: relative;
+    bottom: 190px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
 }
 
-@media (min-width: 1024px) {
+#left,
+#right {
+    width: 25px;
+    height: 25px;
+    transition: .5s;
+    float: left;
+    box-shadow: -2px 2px 0 rgba(33,33,33, .2);
+    float: left;
+}
+
+#left {
+    transform: rotate(45deg);
+    align-self: flex-start;
+}
+
+#right {
+    transform: rotate(225deg);
+    align-self: flex-end;
+}
+
+#left:hover,
+#right:hover {
+    box-shadow: -2px 2px 0 rgba(33,33,33, 1);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@media (min-width: 768px) {
+
+    header {
+        flex-direction: row;
+    }
     
 
 }
