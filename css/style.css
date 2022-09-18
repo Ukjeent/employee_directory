@@ -8,11 +8,15 @@ body {
     background-color: rgba(252,252,252,255);
 }
 
+p {
+    cursor: default;
+}
+
 #employees-div {
     display: grid;
     grid-template-columns: repeat(auto-fit, 295px);
     grid-gap: 20px 10px;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .employee {
@@ -26,7 +30,7 @@ body {
 }
 
 .employee:hover {
-    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+    box-shadow: 0 0 11px rgba(33,33,33, .2); 
 }
 
 .employee-img {
@@ -71,17 +75,28 @@ body {
 
 #employee-overlay {
     position: fixed;
-    display: grid;
     top: 0px;
     left: 0px;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
+    transition: opacity .2s ease-in;
+    display: grid;
+}
+
+.show {
+    z-index: 1;
     opacity: 1;
+}
+
+.hide {
+    z-index: -1;
+    opacity: 0;
 }
 
 
 #employee-popup {
+    display: flex;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 11px rgb(33 33 33 / 20%);
@@ -94,17 +109,24 @@ body {
     justify-self: center;
 }
 
+#close-btn {
+    margin-left: auto;
+    margin-right: 20px;
+    align-self: flex-start;
+    transition: font-weight .2s ease-in;
+}
+
+#close-btn:hover {
+    font-weight: bold;
+}
+
 
 @media (min-width: 768px) {
     
-    /* #employees-div {
-        grid-template-columns: repeat(2, minmax(250px, 1fr));
-    } */
+
 }
 
 @media (min-width: 1024px) {
     
-    /* #employees-div {
-        grid-template-columns: repeat(3, 330px);
-    } */
+
 }

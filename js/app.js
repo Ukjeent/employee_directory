@@ -1,3 +1,5 @@
+
+
 const employeesDiv = document.getElementById('employees-div');
 const employeeInfo = {
     name: '',
@@ -27,8 +29,6 @@ const employeeInfo = {
 
 
     console.log(employeeInfo);
-
-
 
 
 
@@ -64,3 +64,32 @@ function checkStatus(response) {
         return Promise.reject(new Error(response.statusText));
     }
 }
+
+
+//
+// Overlay
+//
+
+const overlay = document.getElementById('employee-overlay');
+const employee = document.getElementById('employee')
+
+// Open overlay
+
+document.addEventListener('click', (e) => {
+    const mClick = e.target;
+    if ( mClick.classList.contains('employee') || mClick.parentElement.classList.contains('employee') || mClick.parentElement.parentElement.classList.contains('employee') ) {
+        overlay.classList.add('show');
+        overlay.classList.remove('hide');
+    }
+});
+
+// Close overlay
+
+document.addEventListener('click', (e) => {
+    const mClick = e.target;
+
+    if (mClick.id === 'close-btn') {
+        overlay.classList.add('hide');
+        overlay.classList.remove('show');
+    }
+});
