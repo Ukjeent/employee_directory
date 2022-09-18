@@ -80,13 +80,13 @@ p {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    transition: opacity .2s ease-in;
     display: grid;
 }
 
 .show {
     z-index: 1;
     opacity: 1;
+    transition: opacity .2s ease-in;
 }
 
 .hide {

@@ -88,7 +88,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
     const mClick = e.target;
 
-    if (mClick.id === 'close-btn') {
+    if (mClick.id === 'close-btn' || mClick.id === 'employee-overlay') {
         overlay.classList.add('hide');
         overlay.classList.remove('show');
     }
