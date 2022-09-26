@@ -19,6 +19,8 @@ header {
     align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #main-header {
