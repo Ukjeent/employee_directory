@@ -1,5 +1,3 @@
-
-
 const employeesDiv = document.getElementById('employees-div');
 const employeeInfo = {
     name: '',
@@ -16,7 +14,6 @@ fetch('https://randomuser.me/api/?results=12&?inc=,name,location,email,picture,p
 .then(checkStatus)
 .then((res) => res.json())
 .then((data) => { 
-    console.log(data); 
         allEmployeeInfo = data;
         storeInfoInObjectAndCreateDiv();
 })
@@ -32,7 +29,6 @@ function storeInfoInObjectAndCreateDiv() {
         createEmployeeDiv(employeeInfo.image, employeeInfo.name, employeeInfo.email, employeeInfo.city, i);
     }
 }
-console.log(employeeInfo);
 
 
     // fetch('https://randomuser.me/api/?results=12&?inc=,name,location,email,picture,phone,dob&noinfo')
@@ -96,7 +92,6 @@ function checkStatus(response) {
 const overlay = document.getElementById('employee-overlay');
 
 // Open overlay
-
 document.addEventListener('click', (e) => {
     const mClick = e.target;
 
@@ -108,8 +103,8 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Close overlay
 
+// Close overlay
 document.addEventListener('click', (e) => {
     const mClick = e.target;
 
@@ -121,7 +116,6 @@ document.addEventListener('click', (e) => {
 
 
 // Overlay content
-
 function createEmployeePopupContent(imageUrl, employeeName, emplyeeEmail, employeeCity, employeeCell, emplyeeAddress, employeeDob, arrNumber) {
     const popupDiv = document.getElementById('employee-popup');
     const image = document.getElementById('employee-popup-img');
@@ -159,21 +153,66 @@ function createPopupContent(arrNumb) {
 }
 
 
+//
+// Display next/previous empolyee in popup
+//
+
+const openPopUp = document.querySelector('#employee-popup');
+let activeSearchResult = [];
+
+// Stores all active employees(Employees displayed on the site) in an array 
+function getAllActiveEmplyees() {
+    activeSearchResult = [];
+    const openEmplyees = document.querySelectorAll('.employee');
+    openEmplyees.forEach(element => {
+        if (element.style.display !== 'none') {
+            activeSearchResult.push(element.dataset.arrNumber);
+        }
+    });
+}
+
+
+// Opens next employee when the user clicks the right arrow in the popup
+function openNextPopUp() {
+    let number = openPopUp.dataset.arrNumber;
+    const openPopUpIndex = activeSearchResult.indexOf(number);
+    if (activeSearchResult.length === 1) {
+        // Do nothing
+    } else if (activeSearchResult.length > 1 && activeSearchResult[openPopUpIndex+1] !== undefined) {
+        createPopupContent(activeSearchResult[openPopUpIndex+1]);
+    } else {
+        createPopupContent(activeSearchResult[0]);
+    }
+}
+
+// Opens previous employee when the user clicks the left arrow in the popup
+function openPreviousPopUp() {
+    let number = openPopUp.dataset.arrNumber;
+    const openPopUpIndex = activeSearchResult.indexOf(number);
+    if (activeSearchResult.length === 1) {
+        // Do nothing
+    } else if (activeSearchResult.length > 1 && activeSearchResult[openPopUpIndex-1] !== undefined) {
+        createPopupContent(activeSearchResult[openPopUpIndex-1]);
+    } else {
+        createPopupContent(activeSearchResult[activeSearchResult.length-1]);
+    }
+}
+
+
+// Eventlistener for arrows in the popup
 document.addEventListener('click', (e) => {
     const mClick = e.target;
-    const popup = document.getElementById('employee-popup');
-    let arrayNumber = parseInt(popup.dataset.arrNumber);
-    
-    if (mClick.id === 'right' && arrayNumber === 11) {
-        createPopupContent(0);
-    } else if (mClick.id === 'left' && arrayNumber === 0) {
-        createPopupContent(11);
-    } else if (mClick.id === 'right') {
-        createPopupContent(arrayNumber+1);
+
+    if (mClick.id === 'right') {
+        getAllActiveEmplyees(); // Calls the function to store all open employees in an array
+        openNextPopUp(); // Calls the function to open the next employee
     } else if (mClick.id === 'left') {
-        createPopupContent(arrayNumber-1);
+        getAllActiveEmplyees(); // Calls the function to store all open employees in an array
+        openPreviousPopUp(); // Calls the function to open the previous employee
     }
 });
+
+
 
 //
 // Search
@@ -186,7 +225,6 @@ const input = document.getElementById('search-bar-input');
 input.addEventListener('keyup', (e) => {
     let inputValue = e.target.value.toLowerCase();
     let employees = document.querySelectorAll('.employeeName');
-    console.log(inputValue);
     employees.forEach( (employee) => {
         if(employee.textContent.toLowerCase().includes(inputValue)) {
             employee.parentElement.parentElement.style.display = 'flex';
